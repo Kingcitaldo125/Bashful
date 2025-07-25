@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tofind=$1
+tofind=("$@")
 
 if [ "$tofind" == "" ];
 then
@@ -10,9 +10,12 @@ fi
 string=`echo $PATH`
 IFS=':' read -r -a array <<< "$string"
 
-for path in "${array[@]}";
+for item in "${tofind[@]}";
 do
-    find $path -name $tofind -executable
+    for path in "${array[@]}";
+    do
+        find $path -name $item -executable
+    done
 done
 
 exit 0
