@@ -1,4 +1,8 @@
 #!/bin/bash
+# Art collector greps the 'FROM' lines in Dockerfiles in a specified directory
+# and tries to pull down the corresponding images.
+# Some images come from either custom registries, or are not associated
+# with a registry docker has access to by default. These image pulls are skipped.
 
 floc=$1
 
@@ -8,7 +12,6 @@ then
     exit 1
 fi
 
-dockerfiles=$(find . | grep Dockerfile)
 which docker &>/dev/null
 rc=`echo $?`
 
@@ -18,11 +21,28 @@ then
     exit $rc
 fi
 
-for itm in $dockerfiles
-do
-    img=`cat $itm | grep "FROM" | awk '{ print $1 }'`
+dockerfiles=$(find $floc -type f | grep Dockerfile)
 
-    # Try to pull down the image
+# Collect all of the image names from the dockerfiles in the specified directory
+declare -a images
+while IFS= read -r line;
+do
+    img=`cat $line | grep -E "^FROM\b" | awk '{ print $2 }'`
+
+    has_img=`echo "${images[@]}" | grep "$img"`
+
+    if [ "$has_img" != "" ];
+    then
+        continue
+    fi
+
+    images+=("$img")
+    echo "added ${img}"
+done <<< "$dockerfiles"
+
+# Try to pull down the images
+for img in "${images[@]}"
+do
     docker pull $img &>/dev/null
     rc=`echo $?`
 
