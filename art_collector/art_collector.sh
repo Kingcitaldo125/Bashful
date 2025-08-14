@@ -27,17 +27,20 @@ dockerfiles=$(find $floc -type f | grep Dockerfile)
 declare -a images
 while IFS= read -r line;
 do
-    img=`cat $line | grep -E "^FROM\b" | awk '{ print $2 }'`
+    limages=`cat $line | grep -E "^FROM\b" | awk '{ print $2 }'`
 
-    has_img=`echo "${images[@]}" | grep "$img"`
+    # Go through the listing of images for this Dockerfile
+    while IFS= read -r img;
+    do
+        has_img=$(echo "${images[@]}" | grep "$img")
 
-    if [ "$has_img" != "" ];
-    then
-        continue
-    fi
+        if [ "$has_img" != "" ];
+        then
+            continue
+        fi
 
-    images+=("$img")
-    echo "added ${img}"
+        images+=("$img")
+    done <<< "$limages"
 done <<< "$dockerfiles"
 
 # Try to pull down the images
