@@ -11,6 +11,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Find all scripts
         run: export scripts=`find . -type f | grep -E "\.sh$"`
 
