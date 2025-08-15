@@ -1,4 +1,5 @@
 #!/bin/bash
+# Address book is a script that helps exemplify various bash commands and bash syntax
 
 filename="records.txt"
 
