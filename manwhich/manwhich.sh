@@ -1,4 +1,5 @@
 #!/bin/bash
+# Manwhich is a bash implementation of the `which` GNU coreutil/command
 
 tofind=("$@")
 
