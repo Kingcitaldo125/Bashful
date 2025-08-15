@@ -16,6 +16,7 @@ jobs:
 
       - name: Check all scripts for the EXE bit
         run: |
+          #!/bin/bash
           while IFS= read -r line;
           do
               if [ ! -x $line ];
