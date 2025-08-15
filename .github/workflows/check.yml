@@ -1,0 +1,26 @@
+name: Check workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find all scripts
+        run: export scripts=`find . -type f | grep -E "\.sh$"`
+
+      - name: Check all scripts for the EXE bit
+        run: |
+          while IFS= read -r line;
+          do
+              if [ ! $line -x ];
+              then
+                  echo "File $line does not have EXE (+x) bit set."
+                  exit 1
+              fi
+          done <<< "${scripts}"
