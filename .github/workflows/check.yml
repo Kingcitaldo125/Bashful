@@ -14,11 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Find all scripts
-        run: export scripts=`find . -type f | grep -E "\.sh$"`
-
       - name: Check all scripts for the EXE bit
         run: |
+          #!/bin/bash
           while IFS= read -r line;
           do
               if [ ! -x $line ];
@@ -26,4 +24,4 @@ jobs:
                   echo "File $line does not have EXE (+x) bit set."
                   exit 1
               fi
-          done <<< "${scripts}"
+          done <<< `find . -type f | grep -E "\.sh$"`
