@@ -40,15 +40,15 @@ do
             continue
         fi
 
-        # Only extract images with a colon
-        ximg=`grep "$img" | grep ":"`
+        # Only extract images with a tag
+        ximg=`grep "$img" | grep ":" | awk -F':' '{ print $2 }'`
 
         if [ "$ximg" == "" ];
         then
             continue
         fi
 
-        images+=("$ximg")
+        images+=("$img")
     done <<< "$limages"
 done <<< "$dockerfiles"
 
