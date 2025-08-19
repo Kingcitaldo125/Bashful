@@ -3,6 +3,7 @@
 # and tries to pull down the corresponding images.
 # Some images come from either custom registries, or are not associated
 # with a registry docker has access to by default. These image pulls are skipped.
+# Images that do not have a tag specifier are also skipped.
 
 floc=$1
 
@@ -39,9 +40,30 @@ do
             continue
         fi
 
-        images+=("$img")
+        # Only extract images with a colon
+        ximg=`grep "$img" | grep ":"`
+
+        if [ "$ximg" == "" ];
+        then
+            continue
+        fi
+
+        images+=("$ximg")
     done <<< "$limages"
 done <<< "$dockerfiles"
+
+echo "Going to pull the following images:"
+for img in "${images[@]}"
+do
+    echo "$img"
+done
+
+read -p "Is this okay?[yN]: " pullinput
+
+if [ "$pullinput" != "y" ];
+then
+    exit 0
+fi
 
 # Try to pull down the images
 for img in "${images[@]}"
@@ -53,8 +75,6 @@ do
     then
         echo "Pulled image '${img}' successfully."
     fi
-
-    sleep 1
 done
 
 exit 0
