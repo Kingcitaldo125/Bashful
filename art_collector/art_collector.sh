@@ -41,7 +41,7 @@ do
         fi
 
         # Only extract images with a tag
-        ximg=`grep "$img" | grep ":" | awk -F':' '{ print $2 }'`
+        ximg=`echo "$img" | grep ":" | awk -F':' '{ print $2 }'`
 
         if [ "$ximg" == "" ];
         then
