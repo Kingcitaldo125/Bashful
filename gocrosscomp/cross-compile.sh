@@ -29,7 +29,7 @@ do
     
     echo "Building for $GOOS/$GOARCH..."
     
-    env GOOS=$GOOS GOARCH=$GOARCH go build -o $output_name .
+    env CGO_ENABLED=0 GOOS=$GOOS GOARCH=$GOARCH go build -a -ldflags="-s -w" -o $output_name .
     
     if [ $? -ne 0 ]; then
         exit 1
