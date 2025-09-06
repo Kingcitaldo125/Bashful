@@ -12,16 +12,16 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 linux-amd64: $(BUILD_DIR)
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o $(BUILD_DIR)/$(APP_NAME)-linux-amd64 .
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BUILD_DIR)/$(APP_NAME)-linux-amd64 .
 
 linux-arm64: $(BUILD_DIR)
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -a -o $(BUILD_DIR)/$(APP_NAME)-linux-arm64 .
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o $(BUILD_DIR)/$(APP_NAME)-linux-arm64 .
 
 darwin-arm64: $(BUILD_DIR)
-	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -a -o $(BUILD_DIR)/$(APP_NAME)-darwin-arm64 .
+	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -o $(BUILD_DIR)/$(APP_NAME)-darwin-arm64 .
 
 windows-amd64: $(BUILD_DIR)
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -a -o $(BUILD_DIR)/$(APP_NAME)-windows-amd64.exe .
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o $(BUILD_DIR)/$(APP_NAME)-windows-amd64.exe .
 
 # Convenience targets
 linux: linux-amd64 linux-arm64
