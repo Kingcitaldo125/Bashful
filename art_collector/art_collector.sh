@@ -48,6 +48,12 @@ do
             continue
         fi
 
+        # Don't include image tags that have a bash-esque variable dereference in the tag.
+        if [[ "$ximg" =~ [\$\{\}] ]];
+        then
+            continue
+        fi
+
         images+=("$img")
     done <<< "$limages"
 done <<< "$dockerfiles"
